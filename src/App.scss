@@ -1,0 +1,115 @@
+$color_serenity: #92A8D1;
+$color_rose_quartz: #f7cac9;
+$cell_size: 100px;
+
+@mixin size($w, $h:$w) {
+  width: $w;
+  height: $h;
+}
+ 
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  @include size($cell_size * 3)
+}
+
+.grid__cell {
+  @include size($cell_size);
+  padding: 20px;
+  cursor: pointer;
+  border: solid 1px #eee;
+  position: relative;
+  &.grid__cell--small {
+    @include size(60px);
+    &.invisible {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+  &:hover {
+    background-color: rgba(#888, .05);
+  }
+  &::before, &::after {
+    content: "";
+    transition: .5s;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 50%;
+  }
+  &.circle {
+    &::before {
+      @include size(90%);
+      background-color: $color_rose_quartz;
+      border-radius: 50%;
+    }
+    &::after {
+      @include size(60%);
+      background: #fffaf2;
+      border-radius: 50%;
+    }
+    &:hover::after {
+      background: linear-gradient(rgba(#888, .05), rgba(#888, .05)) #fffaf2;
+    }
+  }
+  &.cross {
+    &::before, &::after {
+      @include size(90%, 15%);
+      background-color: $color_serenity;
+      border-radius: 0px;
+    }
+    &::before {
+      transform: translate(-50%,-50%) rotate(45deg)
+    }
+    &::after {
+      transform: translate(-50%,-50%) rotate(-45deg)
+    }
+  }
+}
+
+.player {
+  font-size: 2rem;
+  margin: 1rem 0;
+  font-weight: 600;
+  &.circle--win {
+    color: $color_rose_quartz;
+    transform: translateY(40px) scale(1.5);
+  }
+  &.cross--win {
+    color: $color_serenity;
+    transform: translateY(40px) scale(1.5);
+  }
+  &.draw {
+    transform: translateY(40px) scale(1.5);
+  }
+}
+
+.btn {
+  font-size: 2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .5s;
+  margin-top: 1rem;
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    height: 2px;
+    width: 0;
+    left: 0;
+    bottom: -2px;
+    transition: .5s;
+    background-color: #999;
+  }
+  &:hover::before{
+    width: 100%;
+  }
+}
